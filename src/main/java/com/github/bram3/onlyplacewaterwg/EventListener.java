@@ -1,11 +1,14 @@
 package com.github.bram3.onlyplacewaterwg;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import com.sk89q.worldguard.session.SessionManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,15 +37,19 @@ public class EventListener implements Listener {
         RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
         com.sk89q.worldedit.util.Location wrappedLocation = BukkitAdapter.adapt(location);
         ApplicableRegionSet set = query.getApplicableRegions(wrappedLocation);
-
-        System.out.println("1");
         if (!(set.testState(null, plugin.WATER_FLAG))) return;
-        System.out.println("2");
-
-        event.setCancelled(true);
         Player player = event.getPlayer();
+        World world = player.getWorld();
+        if (hasBypass(player, world)) return;
+        event.setCancelled(true);
         player.sendMessage(config.getColoredMessage("error_messages.cant_place_block"));
 
     }
+    private boolean hasBypass(Player player, World world) {
+        com.sk89q.worldedit.world.World wrappedWorld = BukkitAdapter.adapt(world);
+        LocalPlayer wrappedPlayer = plugin.worldGuardPlugin.wrapPlayer(player);
 
+        SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
+        return sessionManager.hasBypass(wrappedPlayer, wrappedWorld);
+    }
 }
