@@ -1,0 +1,5 @@
+# DO NOT CHANGE THIS
+config-version: 1
+
+error_messages:
+  cant_place_block: "&You are not allowed to place this block."
