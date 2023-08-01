@@ -1,5 +1,5 @@
 # DO NOT CHANGE THIS
-config-version: 1
+config-version: 2
 
 error_messages:
-  cant_place_block: "&cYou are not allowed to place this block."
+  cant_interact_with_block: "&cYou are not allowed to place/break this block."
