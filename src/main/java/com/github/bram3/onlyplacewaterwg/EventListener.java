@@ -31,7 +31,6 @@ public class EventListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null) return;
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getItem() == null) return;
         if (event.getItem().getType() == Material.WATER_BUCKET || event.getItem().getType() == Material.BUCKET) return;
         Location location = event.getPlayer().getLocation();
